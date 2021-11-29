@@ -56,14 +56,14 @@ public:
 private:
 	mesh meshCube;
 	mat4x4 matProj;
-
+	vec3d vCamera;	// Location of camera in world space
 	float fTheta;
 
 	void MultiplyMatrixVector(vec3d& i, vec3d& o, mat4x4& m)
 	{
 		o.x = i.x * m.m[0][0] + i.y * m.m[1][0] + i.z * m.m[2][0] + m.m[3][0];
-		o.x = i.x * m.m[0][1] + i.y * m.m[1][1] + i.z * m.m[2][1] + m.m[3][1];
-		o.x = i.x * m.m[0][2] + i.y * m.m[1][2] + i.z * m.m[2][2] + m.m[3][2];
+		o.y = i.x * m.m[0][1] + i.y * m.m[1][1] + i.z * m.m[2][1] + m.m[3][1];
+		o.z = i.x * m.m[0][2] + i.y * m.m[1][2] + i.z * m.m[2][2] + m.m[3][2];
 		float w = i.x * m.m[0][3] + i.y * m.m[1][3] + i.z * m.m[2][3] + m.m[3][3];
 
 		if (w != 0.0f)
@@ -83,28 +83,28 @@ public:
 		{
 
 			// SOUTH
-			{ 0.0f, 0.0f, 0.0f,		0.0f, 1.0f, 0.0f,	 1.0f, 1.0f, 0.0f },
-			{ 0.0f, 0.0f, 0.0f,		1.0f, 1.0f, 0.0f,	 1.0f, 0.0f, 0.0f },
+			{ 0.0f, 0.0f, 0.0f, 1.0f,		0.0f, 1.0f, 0.0f, 1.0f,		 1.0f, 1.0f, 0.0f, 1.0f },
+			{ 0.0f, 0.0f, 0.0f,	1.0f,		1.0f, 1.0f, 0.0f, 1.0f,		 1.0f, 0.0f, 0.0f, 1.0f },
 
-			// EAST
-			{ 1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 0.0f,	 1.0f, 1.0f, 1.0f },
-			{ 1.0f, 0.0f, 0.0f,		1.0f, 1.0f, 1.0f,	 1.0f, 0.0f, 1.0f },
+			// EAST											  							   
+			{ 1.0f, 0.0f, 0.0f,	1.0f,		1.0f, 1.0f, 0.0f, 1.0f,		 1.0f, 1.0f, 1.0f, 1.0f },
+			{ 1.0f, 0.0f, 0.0f,	1.0f,		1.0f, 1.0f, 1.0f, 1.0f,		 1.0f, 0.0f, 1.0f, 1.0f },
 
-			// NORTH
-			{ 1.0f, 0.0f, 1.0f,		1.0f, 1.0f, 1.0f,	 0.0f, 1.0f, 1.0f },
-			{ 1.0f, 0.0f, 1.0f,		0.0f, 1.0f, 1.0f,	 0.0f, 0.0f, 1.0f },
+			// NORTH										  							   
+			{ 1.0f, 0.0f, 1.0f,	1.0f,		1.0f, 1.0f, 1.0f, 1.0f,		 0.0f, 1.0f, 1.0f, 1.0f },
+			{ 1.0f, 0.0f, 1.0f,	1.0f,		0.0f, 1.0f, 1.0f, 1.0f,		 0.0f, 0.0f, 1.0f, 1.0f },
 
-			// WEST
-			{ 0.0f, 0.0f, 1.0f,		0.0f, 1.0f, 1.0f,	 0.0f, 1.0f, 0.0f },
-			{ 0.0f, 0.0f, 1.0f,		0.0f, 1.0f, 0.0f,	 0.0f, 0.0f, 0.0f },
+			// WEST											  							   
+			{ 0.0f, 0.0f, 1.0f,	1.0f,		0.0f, 1.0f, 1.0f, 1.0f,		 0.0f, 1.0f, 0.0f, 1.0f },
+			{ 0.0f, 0.0f, 1.0f,	1.0f,		0.0f, 1.0f, 0.0f, 1.0f,		 0.0f, 0.0f, 0.0f, 1.0f },
 
-			// TOP
-			{ 0.0f, 1.0f, 0.0f,		0.0f, 1.0f, 0.0f,	 1.0f, 1.0f, 1.0f },
-			{ 0.0f, 1.0f, 0.0f,		1.0f, 1.0f, 1.0f,	 1.0f, 1.0f, 0.0f },
+			// TOP											  							   
+			{ 0.0f, 1.0f, 0.0f,	1.0f,		0.0f, 1.0f, 1.0f, 1.0f,		 1.0f, 1.0f, 1.0f, 1.0f },
+			{ 0.0f, 1.0f, 0.0f,	1.0f,		1.0f, 1.0f, 1.0f, 1.0f,		 1.0f, 1.0f, 0.0f, 1.0f },
 
-			// BOTTOM
-			{ 0.0f, 0.0f, 1.0f,		0.0f, 0.0f, 0.0f,	 1.0f, 0.0f, 0.0f },
-			{ 0.0f, 0.0f, 1.0f,		1.0f, 0.0f, 0.0f,	 1.0f, 0.0f, 1.0f },
+			// BOTTOM										  							   
+			{ 1.0f, 0.0f, 1.0f,	1.0f,		0.0f, 0.0f, 1.0f, 1.0f,		 0.0f, 0.0f, 0.0f, 1.0f },
+			{ 1.0f, 0.0f, 1.0f,	1.0f,		0.0f, 0.0f, 0.0f, 1.0f,		 1.0f, 0.0f, 0.0f, 1.0f },
 
 		};
 			
@@ -127,32 +127,34 @@ public:
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
+
+
 		// clear screen
 		Clear(olc::BLACK);
 
-		// Clear Depth Buffer
-		for (int i = 0; i < ScreenWidth() * ScreenHeight(); i++)
-			pDepthBuffer[i] = 0.0f;
+		//// Clear Depth Buffer
+		//for (int i = 0; i < ScreenWidth() * ScreenHeight(); i++)
+		//	pDepthBuffer[i] = 0.0f;
 
 
 		mat4x4 matRotZ, matRotX;
 		fTheta += 1.0f * fElapsedTime;
 
-		// Rotation Z
+
+		matRotX.m[0][0] = 1;
+		matRotX.m[1][1] = cosf(fTheta * 0.5f);
+		matRotX.m[1][2] = sinf(fTheta * 0.5f);
+		matRotX.m[2][1] = -sinf(fTheta * 0.5f);
+		matRotX.m[2][2] = cosf(fTheta * 0.5f);
+		matRotX.m[3][3] = 1;;	// Travel Upwards
+
+				// Rotation Z
 		matRotZ.m[0][0] = cosf(fTheta);
 		matRotZ.m[0][1] = sinf(fTheta);
 		matRotZ.m[1][0] = -sinf(fTheta);
 		matRotZ.m[1][1] = cosf(fTheta);
 		matRotZ.m[2][2] = 1;
 		matRotZ.m[3][3] = 1;
-
-		// Rotation X
-		matRotX.m[0][0] = 1;
-		matRotX.m[1][1] = cosf(fTheta * 0.5f);
-		matRotX.m[1][2] = sinf(fTheta * 0.5f);
-		matRotX.m[2][1] = -sinf(fTheta * 0.5f);
-		matRotX.m[2][2] = cosf(fTheta * 0.5f);
-		matRotX.m[3][3] = 1;
 
 
 		// Draw Triangles
@@ -195,11 +197,13 @@ public:
 			// Rasterize Triangle
 			DrawTriangle(triProjected.p[0].x, triProjected.p[0].y,
 				triProjected.p[1].x, triProjected.p[1].y,
-				triProjected.p[2].x, triProjected.p[2].y);
-			FillTriangle(triProjected.p[0].x, triProjected.p[0].y,
+				triProjected.p[2].x, triProjected.p[2].y, olc::RED);
+
+
+			/*FillTriangle(triProjected.p[0].x, triProjected.p[0].y,
 				triProjected.p[1].x, triProjected.p[1].y,
 				triProjected.p[2].x, triProjected.p[2].y
-				);
+				);*/
 
 		}
 
@@ -211,7 +215,7 @@ public:
 int main()
 {
 	olcEngine3D demo;
-	if (demo.Construct(256, 240, 2, 2))
+	if (demo.Construct(640, 480, 2, 2))
 		demo.Start();
 
 	return 0;
